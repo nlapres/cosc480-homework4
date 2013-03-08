@@ -1,6 +1,11 @@
 Cosc480Homework3::Application.routes.draw do
-  resources :movies
-  root :to => redirect('/movies')
+	resources :movies
+	root :to => redirect('/movies')
+
+	resources :movies do
+		match 'director'=> 'movies#director'
+	end
+
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

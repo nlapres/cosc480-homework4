@@ -24,6 +24,7 @@ class MoviesController < ApplicationController
     if params[:sort] != session[:sort] or params[:ratings] != session[:ratings]
       session[:sort] = sort
       session[:ratings] = @selected_ratings
+			flash.keep(:notice)
       redirect_to :sort => sort, :ratings => @selected_ratings and return
     end
     @movies = Movie.find_all_by_rating(@selected_ratings.keys, ordering)
@@ -56,5 +57,17 @@ class MoviesController < ApplicationController
     flash[:notice] = "Movie '#{@movie.title}' deleted."
     redirect_to movies_path
   end
+
+	def director
+		@movie = Movie.find(params[:movie_id])
+		director = @movie.director
+		if director.blank?
+			flash[:notice] = "'#{@movie.title}' has no director info"
+			flash.keep(:notice)
+			redirect_to movies_path
+		else
+			@movies = Movie.find_all_by_director(director)
+		end
+	end
 
 end
